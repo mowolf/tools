@@ -65,12 +65,12 @@ convert.addEventListener('click', async () => {
     $('progress').value = 0;
     $('status').textContent = 'Loading video engine… First load downloads about 32 MB.';
     if (!engine) {
-      const { FFmpeg } = await import('./vendor/ffmpeg/index.js');
+      const { FFmpeg } = await import('./ffmpeg.js');
       if (!busy) return;
       engine = new FFmpeg();
       current = engine;
       current.on('progress', ({ progress }) => { $('progress').value = Math.min(0.99, Math.max(0, progress)); });
-      await current.load({ coreURL: new URL('./vendor/core/ffmpeg-core.js', location.href).href, wasmURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm/ffmpeg-core.wasm' });
+      await current.load({ coreURL: new URL('./ffmpeg-core.js', location.href).href, wasmURL: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm/ffmpeg-core.wasm' });
     }
     current = engine;
     $('status').textContent = 'Exporting MP4… Keep this tab open.';
@@ -90,7 +90,7 @@ convert.addEventListener('click', async () => {
     $('download').hidden = false;
     $('status').textContent = 'Your video is ready. Download the MP4 below.';
   } catch (e) {
-    $('status').textContent = engine ? `${e.message || 'Export failed.'} If memory is low, try a smaller video.` : 'Export stopped or the video engine could not load. Check your connection, allow downloads from cdn.jsdelivr.net, and confirm the vendor folder was uploaded alongside index.html.';
+    $('status').textContent = engine ? `${e.message || 'Export failed.'} If memory is low, try a smaller video.` : 'Export stopped or the video engine could not load. Check your connection, allow downloads from cdn.jsdelivr.net, and confirm all files from the flat ZIP were uploaded alongside index.html.';
   } finally {
     if (current && engine === current) {
       for (const path of ['input', 'output.mp4']) { try { await current.deleteFile(path); } catch {} }
