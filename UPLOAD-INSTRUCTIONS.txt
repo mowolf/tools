@@ -1,0 +1,1 @@
+Upload all extracted files and the entire vendor folder to the root of mowolf/tools. Do not upload the ZIP itself. In GitHub Settings > Pages, select Deploy from a branch, main, / (root), and Save. No pages.yml is needed. The video engine WASM (~32 MB) downloads from jsDelivr when first used; your videos stay on your device. Browser export has not been tested in this environment.
